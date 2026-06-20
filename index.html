@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>五子棋</title>
+    <meta name="color-scheme" content="light only">
     <style>
         * {
             margin: 0;
@@ -102,6 +103,30 @@
         .cell.black::after,
         .cell.white::after {
             display: none;
+        }
+
+        .piece {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+
+        .piece-black {
+            background-color: #000 !important;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .piece-white {
+            background-color: #fff !important;
+            border: 2px solid #666 !important;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2) !important;
+            color-scheme: light !important;
+            -webkit-appearance: none !important;
         }
 
         .cell.last::before {
@@ -603,16 +628,7 @@
 
             if (board[row][col] !== EMPTY) {
                 var piece = document.createElement('div');
-                piece.className = 'piece';
-                piece.style.cssText = 'position:absolute;width:80%;height:80%;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);';
-                if (board[row][col] === BLACK) {
-                    piece.style.backgroundColor = '#000';
-                    piece.style.boxShadow = '2px 2px 5px rgba(0,0,0,0.5)';
-                } else {
-                    piece.style.backgroundColor = '#ffffff';
-                    piece.style.border = '2px solid #666';
-                    piece.style.boxShadow = '2px 2px 5px rgba(0,0,0,0.2)';
-                }
+                piece.className = 'piece ' + (board[row][col] === BLACK ? 'piece-black' : 'piece-white');
                 cell.appendChild(piece);
             }
         }
@@ -725,16 +741,7 @@
 
                 if (board[row][col] !== EMPTY) {
                     var piece = document.createElement('div');
-                    piece.className = 'piece';
-                    piece.style.cssText = 'position:absolute;width:80%;height:80%;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);';
-                    if (board[row][col] === BLACK) {
-                        piece.style.backgroundColor = '#000';
-                        piece.style.boxShadow = '2px 2px 5px rgba(0,0,0,0.5)';
-                    } else {
-                        piece.style.backgroundColor = '#ffffff';
-                        piece.style.border = '2px solid #666';
-                        piece.style.boxShadow = '2px 2px 5px rgba(0,0,0,0.2)';
-                    }
+                    piece.className = 'piece ' + (board[row][col] === BLACK ? 'piece-black' : 'piece-white');
                     cell.appendChild(piece);
                 }
             });
