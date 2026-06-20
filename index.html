@@ -27,34 +27,11 @@
             max-width: 1000px;
         }
 
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-                gap: 15px;
-            }
-            .right-panel {
-                width: 100%;
-                max-height: none;
-            }
-            .board {
-                grid-template-columns: repeat(15, 1fr);
-                grid-template-rows: repeat(15, 1fr);
-                width: calc(100vw - 90px);
-                height: calc(100vw - 90px);
-            }
-            .cell {
-                width: auto;
-                height: auto;
-            }
-            body {
-                padding: 10px;
-            }
-        }
-
         .left-panel {
             display: flex;
             flex-direction: column;
             gap: 15px;
+            min-width: 0;
         }
 
         .game-panel {
@@ -62,6 +39,7 @@
             border-radius: 16px;
             padding: 25px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
         }
 
         .right-panel {
@@ -432,6 +410,76 @@
             padding: 10px;
             color: #667eea;
             font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                align-items: flex-start;
+            }
+
+            .container {
+                flex-direction: column;
+                gap: 15px;
+                width: 100%;
+            }
+
+            .game-panel {
+                padding: 15px;
+            }
+
+            .right-panel {
+                width: 100%;
+                max-height: none;
+            }
+
+            .board {
+                width: 100%;
+                max-width: calc(100vw - 70px);
+                aspect-ratio: 1;
+                grid-template-columns: repeat(15, 1fr);
+                grid-template-rows: repeat(15, 1fr);
+                padding: 3px;
+            }
+
+            .cell {
+                width: auto;
+                height: auto;
+            }
+
+            .cell.black::after,
+            .cell.white::after {
+                width: 80%;
+                height: 80%;
+            }
+
+            .cell.black::after {
+                background: radial-gradient(circle at 30% 30%, #666, #000);
+            }
+
+            .cell.white::after {
+                background: radial-gradient(circle at 30% 30%, #ffffff, #cccccc);
+                border: 1px solid #bbb;
+            }
+
+            .cell.last::before {
+                width: 25%;
+                height: 25%;
+            }
+
+            .cell.hint::before {
+                font-size: 10px;
+            }
+
+            h1 {
+                font-size: 20px;
+                margin-bottom: 12px;
+            }
+
+            .btn {
+                padding: 10px;
+                font-size: 13px;
+            }
         }
     </style>
 </head>
