@@ -39,6 +39,7 @@
             border-radius: 16px;
             padding: 25px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
         }
 
         .right-panel {
@@ -432,9 +433,9 @@
 
         .danmaku-area {
             position: relative;
-            height: 40px;
+            height: 30px;
             overflow: hidden;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
 
         .danmaku-msg {
@@ -551,6 +552,8 @@
                     <div class="turn" id="turnCount">第 1 手</div>
                 </div>
 
+                <div class="danmaku-area" id="danmakuArea"></div>
+
                 <div class="board" id="board"></div>
 
                 <div class="btn-group" style="margin-top: 15px; display: none;" id="aiButtons">
@@ -560,8 +563,7 @@
                 <div id="hintStatus"></div>
             </div>
 
-            <div class="game-panel" id="chatPanel" style="margin-top: 15px;">
-                <div class="danmaku-area" id="danmakuArea"></div>
+            <div id="chatPanel" style="margin-top: 10px;">
                 <div class="chat-quick-btns">
                     <button class="chat-quick-btn" onclick="sendChat('你这棋下得也忒好了吧')">你这棋下得也忒好了吧</button>
                     <button class="chat-quick-btn" onclick="sendChat('嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚')">嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚</button>
