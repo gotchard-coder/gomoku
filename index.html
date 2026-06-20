@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=3.0, user-scalable=yes">
     <title>五子棋</title>
     <meta name="color-scheme" content="light only">
     <style>
@@ -66,8 +66,8 @@
 
         .board {
             display: grid;
-            grid-template-columns: repeat(15, 35px);
-            grid-template-rows: repeat(15, 35px);
+            grid-template-columns: repeat(15, 40px);
+            grid-template-rows: repeat(15, 40px);
             gap: 0;
             background: #dcb35c;
             padding: 10px;
@@ -77,8 +77,8 @@
         }
 
         .cell {
-            width: 35px;
-            height: 35px;
+            width: 40px;
+            height: 40px;
             background: transparent;
             border: 1px solid #8b6914;
             cursor: pointer;
