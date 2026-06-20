@@ -507,7 +507,7 @@
 
                 <div class="board" id="board"></div>
 
-                <div class="btn-group" style="margin-top: 15px;">
+                <div class="btn-group" style="margin-top: 15px; display: none;" id="aiButtons">
                     <button class="btn btn-hint" onclick="getHint()">💡 AI提示</button>
                     <button class="btn btn-cheat" id="cheatBtn" onclick="toggleCheat()">🚀 开挂</button>
                 </div>
@@ -1142,6 +1142,8 @@
             gameMode = mode;
             updateModeUI();
             newGame();
+            var aiButtons = document.getElementById('aiButtons');
+            aiButtons.style.display = mode === 'pve' ? 'flex' : 'none';
         }
 
         function updateModeUI() {
