@@ -27,6 +27,30 @@
             max-width: 1000px;
         }
 
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .right-panel {
+                width: 100%;
+                max-height: none;
+            }
+            .board {
+                grid-template-columns: repeat(15, 1fr);
+                grid-template-rows: repeat(15, 1fr);
+                width: calc(100vw - 90px);
+                height: calc(100vw - 90px);
+            }
+            .cell {
+                width: auto;
+                height: auto;
+            }
+            body {
+                padding: 10px;
+            }
+        }
+
         .left-panel {
             display: flex;
             flex-direction: column;
