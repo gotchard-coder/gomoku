@@ -99,27 +99,9 @@
             transform: translate(-50%, -50%);
         }
 
-        .cell.black::after {
-            background-color: #000;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
-        }
-
-        .cell.white {
-            background: radial-gradient(circle, #fff 60%, transparent 60%) !important;
-        }
-
+        .cell.black::after,
         .cell.white::after {
-            content: '';
-            position: absolute;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #fff;
-            border: 2px solid #555;
-            box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+            display: none;
         }
 
         .cell.last::before {
@@ -462,19 +444,7 @@
 
             .cell.black::after,
             .cell.white::after {
-                width: 85%;
-                height: 85%;
-            }
-
-            .cell.black::after {
-                background-color: #000;
-                box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-            }
-
-            .cell.white::after {
-                background-color: #fff !important;
-                border: 2px solid #333 !important;
-                box-shadow: 0 0 0 2px #fff, 1px 1px 3px rgba(0,0,0,0.3) !important;
+                display: none;
             }
 
             .cell.last::before {
@@ -628,7 +598,23 @@
         function updateCell(row, col) {
             var cells = document.querySelectorAll('.cell');
             var cell = cells[row * BOARD_SIZE + col];
-            cell.className = 'cell ' + (board[row][col] === BLACK ? 'black' : 'white');
+            var old = cell.querySelector('.piece');
+            if (old) old.remove();
+
+            if (board[row][col] !== EMPTY) {
+                var piece = document.createElement('div');
+                piece.className = 'piece';
+                piece.style.cssText = 'position:absolute;width:80%;height:80%;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);';
+                if (board[row][col] === BLACK) {
+                    piece.style.backgroundColor = '#000';
+                    piece.style.boxShadow = '2px 2px 5px rgba(0,0,0,0.5)';
+                } else {
+                    piece.style.backgroundColor = '#ffffff';
+                    piece.style.border = '2px solid #666';
+                    piece.style.boxShadow = '2px 2px 5px rgba(0,0,0,0.2)';
+                }
+                cell.appendChild(piece);
+            }
         }
 
         function updateLastMove(row, col) {
@@ -734,8 +720,23 @@
                 var row = Math.floor(index / BOARD_SIZE);
                 var col = index % BOARD_SIZE;
                 cell.className = 'cell';
-                if (board[row][col] === BLACK) cell.classList.add('black');
-                if (board[row][col] === WHITE) cell.classList.add('white');
+                var old = cell.querySelector('.piece');
+                if (old) old.remove();
+
+                if (board[row][col] !== EMPTY) {
+                    var piece = document.createElement('div');
+                    piece.className = 'piece';
+                    piece.style.cssText = 'position:absolute;width:80%;height:80%;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);';
+                    if (board[row][col] === BLACK) {
+                        piece.style.backgroundColor = '#000';
+                        piece.style.boxShadow = '2px 2px 5px rgba(0,0,0,0.5)';
+                    } else {
+                        piece.style.backgroundColor = '#ffffff';
+                        piece.style.border = '2px solid #666';
+                        piece.style.boxShadow = '2px 2px 5px rgba(0,0,0,0.2)';
+                    }
+                    cell.appendChild(piece);
+                }
             });
 
             if (moves.length > 0) {
