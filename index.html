@@ -66,8 +66,8 @@
 
         .board {
             display: grid;
-            grid-template-columns: repeat(15, 40px);
-            grid-template-rows: repeat(15, 40px);
+            grid-template-columns: repeat(19, 35px);
+            grid-template-rows: repeat(19, 35px);
             gap: 0;
             background: #dcb35c;
             padding: 10px;
@@ -77,8 +77,8 @@
         }
 
         .cell {
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             background: transparent;
             border: 1px solid #8b6914;
             cursor: pointer;
@@ -506,8 +506,8 @@
             .board {
                 width: 100%;
                 max-width: 100%;
-                grid-template-columns: repeat(15, 1fr);
-                grid-template-rows: repeat(15, 1fr);
+                grid-template-columns: repeat(19, 1fr);
+                grid-template-rows: repeat(19, 1fr);
                 padding: 5px;
                 aspect-ratio: 1;
             }
@@ -628,7 +628,7 @@
     </div>
 
     <script>
-        const BOARD_SIZE = 15;
+        const BOARD_SIZE = 19;
         const EMPTY = 0;
         const BLACK = 1;
         const WHITE = 2;
@@ -1094,8 +1094,8 @@
             score += evaluatePoint(row, col, WHITE) * 1.5;
             board[row][col] = EMPTY;
 
-            var centerDist = Math.abs(row - 7) + Math.abs(col - 7);
-            score += (14 - centerDist) * 10;
+            var centerDist = Math.abs(row - 9) + Math.abs(col - 9);
+            score += (18 - centerDist) * 10;
 
             return score;
         }
@@ -1103,7 +1103,7 @@
         // AI 算法
         function getAIMove() {
             if (moves.length === 0) {
-                return { row: 7, col: 7 };
+                return { row: 9, col: 9 };
             }
 
             var bestScore = -Infinity;
