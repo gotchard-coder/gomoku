@@ -43,10 +43,10 @@
         }
 
         .right-panel {
-            width: 280px;
+            width: 260px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 10px;
             max-height: 700px;
         }
 
@@ -465,7 +465,7 @@
         }
 
         .chat-quick-btn {
-            padding: 6px 10px;
+            padding: 5px 8px;
             border: none;
             border-radius: 15px;
             font-size: 11px;
@@ -568,8 +568,11 @@
                 </div>
                 <div id="hintStatus"></div>
             </div>
+        </div>
 
-            <div id="chatPanel" style="margin-top: 10px;">
+        <div class="right-panel">
+            <div class="panel" id="chatPanel">
+                <h3>嘲讽</h3>
                 <div class="chat-quick-btns">
                     <button class="chat-quick-btn" onclick="sendChat('你这棋下得也忒好了吧')">你这棋下得也忒好了吧</button>
                     <button class="chat-quick-btn" onclick="sendChat('嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚')">嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚</button>
@@ -583,9 +586,8 @@
                     <button class="chat-quick-btn" onclick="sendChat('你开心就好')">你开心就好</button>
                 </div>
             </div>
-        </div>
 
-        <div class="right-panel">
+            <div class="panel">
             <div class="panel">
                 <h3>游戏控制</h3>
                 <div class="btn-group">
