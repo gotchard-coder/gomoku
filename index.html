@@ -527,8 +527,22 @@
                 </div>
             </div>
 
+            <div class="panel" id="replayControls" style="display: none;">
+                <h3>回放控制</h3>
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="replayStart()">⏮</button>
+                    <button class="btn btn-secondary" onclick="replayPrev()">◀</button>
+                    <button class="btn btn-secondary" onclick="replayAutoPlay()">⏯</button>
+                    <button class="btn btn-secondary" onclick="replayNext()">▶</button>
+                    <button class="btn btn-secondary" onclick="replayEnd()">⏭</button>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="exitReplay(); newGame();">退出回放</button>
+                </div>
+            </div>
+
             <div class="panel" style="flex: 1; overflow: hidden;">
-                <h3>历史棋局</h3>
+                <h3>历史棋局 <span style="font-size:12px;color:#999;font-weight:normal">点击回放</span></h3>
                 <div id="historyList" class="history-list">
                     <div class="empty-state">暂无保存的棋局</div>
                 </div>
@@ -556,6 +570,125 @@
         let gameOver = false;
         let savedGames = [];
         let cheatMode = false;
+        let replayGame = null;
+        let replayStep = -1;
+        let replayTimer = null;
+
+        // 回放功能
+        function loadReplay(index) {
+            stopReplay();
+            replayGame = savedGames[index];
+            replayStep = -1;
+            board = Array(BOARD_SIZE).fill(null).map(function() { return Array(BOARD_SIZE).fill(EMPTY); });
+            moves = [];
+            currentPlayer = BLACK;
+            gameOver = false;
+            clearHint();
+            refreshReplayBoard();
+            updateReplayStatus();
+
+            document.querySelectorAll('.history-item').forEach(function(item, i) {
+                item.classList.toggle('active', i === index);
+            });
+        }
+
+        function refreshReplayBoard() {
+            var cells = document.querySelectorAll('.cell');
+            cells.forEach(function(cell) {
+                cell.className = 'cell';
+                var old = cell.querySelector('.piece');
+                if (old) old.remove();
+            });
+
+            for (var i = 0; i <= replayStep && i < replayGame.moves.length; i++) {
+                var m = replayGame.moves[i];
+                board[m.row][m.col] = m.player;
+                var idx = m.row * BOARD_SIZE + m.col;
+                var cell = cells[idx];
+                var piece = document.createElement('div');
+                piece.className = 'piece ' + (m.player === BLACK ? 'piece-black' : 'piece-white');
+                cell.appendChild(piece);
+            }
+
+            if (replayStep >= 0 && replayStep < replayGame.moves.length) {
+                var last = replayGame.moves[replayStep];
+                cells[last.row * BOARD_SIZE + last.col].classList.add('last');
+            }
+
+            var turnEl = document.getElementById('turnCount');
+            turnEl.textContent = '回放 ' + (replayStep + 1) + ' / ' + replayGame.moves.length;
+            var playerEl = document.getElementById('currentPlayer');
+            if (replayStep >= 0 && replayStep < replayGame.moves.length) {
+                var p = replayGame.moves[replayStep].player;
+                playerEl.className = 'player ' + (p === BLACK ? 'black' : 'white');
+                playerEl.textContent = p === BLACK ? '● 黑棋' : '○ 白棋';
+            } else {
+                playerEl.className = 'player black';
+                playerEl.textContent = '● 黑棋';
+            }
+        }
+
+        function updateReplayStatus() {
+            var statusEl = document.getElementById('replayControls');
+            statusEl.style.display = replayGame ? 'flex' : 'none';
+        }
+
+        function replayPrev() {
+            if (!replayGame || replayStep < 0) return;
+            board[replayGame.moves[replayStep].row][replayGame.moves[replayStep].col] = EMPTY;
+            replayStep--;
+            refreshReplayBoard();
+        }
+
+        function replayNext() {
+            if (!replayGame || replayStep >= replayGame.moves.length - 1) return;
+            replayStep++;
+            refreshReplayBoard();
+        }
+
+        function replayStart() {
+            if (!replayGame) return;
+            stopReplay();
+            board = Array(BOARD_SIZE).fill(null).map(function() { return Array(BOARD_SIZE).fill(EMPTY); });
+            replayStep = -1;
+            refreshReplayBoard();
+        }
+
+        function replayEnd() {
+            if (!replayGame) return;
+            stopReplay();
+            replayStep = replayGame.moves.length - 1;
+            refreshReplayBoard();
+        }
+
+        function replayAutoPlay() {
+            if (!replayGame) return;
+            if (replayTimer) { stopReplay(); return; }
+            if (replayStep >= replayGame.moves.length - 1) {
+                board = Array(BOARD_SIZE).fill(null).map(function() { return Array(BOARD_SIZE).fill(EMPTY); });
+                replayStep = -1;
+                refreshReplayBoard();
+            }
+            replayTimer = setInterval(function() {
+                if (replayStep >= replayGame.moves.length - 1) { stopReplay(); return; }
+                replayStep++;
+                refreshReplayBoard();
+            }, 500);
+        }
+
+        function stopReplay() {
+            if (replayTimer) { clearInterval(replayTimer); replayTimer = null; }
+        }
+
+        function exitReplay() {
+            stopReplay();
+            replayGame = null;
+            replayStep = -1;
+            updateReplayStatus();
+            document.querySelectorAll('.history-item').forEach(function(item) {
+                item.classList.remove('active');
+            });
+        }
 
         function init() {
             loadSavedGames();
@@ -701,6 +834,7 @@
 
         function newGame() {
             closeWin();
+            exitReplay();
             cheatMode = false;
             var cheatBtn = document.getElementById('cheatBtn');
             cheatBtn.classList.remove('active');
@@ -1085,7 +1219,7 @@
             var html = '';
             for (var i = 0; i < savedGames.length; i++) {
                 var game = savedGames[i];
-                html += '<div class="history-item">';
+                html += '<div class="history-item" onclick="loadReplay(' + i + ')">';
                 html += '<button class="delete-btn" onclick="deleteGame(' + game.id + ', event)">×</button>';
                 html += '<div class="mini-board">' + renderMiniBoard(game.boardState) + '</div>';
                 html += '<div class="info-row">';
