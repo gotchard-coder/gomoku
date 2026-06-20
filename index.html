@@ -430,51 +430,26 @@
             font-size: 12px;
         }
 
-        .chat-panel {
-            margin-top: 15px;
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 15px;
-            max-height: 200px;
-        }
-
-        .chat-panel h3 {
-            font-size: 14px;
-            color: #333;
+        .danmaku-area {
+            position: relative;
+            height: 40px;
+            overflow: hidden;
             margin-bottom: 10px;
         }
 
-        .chat-messages {
-            max-height: 80px;
-            overflow-y: auto;
-            margin-bottom: 10px;
-            padding: 5px;
-            background: white;
-            border-radius: 8px;
-            min-height: 40px;
+        .danmaku-msg {
+            position: absolute;
+            white-space: nowrap;
+            font-size: 16px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            animation: danmaku-fly 4s linear forwards;
+            pointer-events: none;
         }
 
-        .chat-msg {
-            padding: 5px 8px;
-            margin-bottom: 4px;
-            border-radius: 6px;
-            font-size: 12px;
-            line-height: 1.4;
-        }
-
-        .chat-msg.black-msg {
-            background: #e8f4fd;
-            color: #1565c0;
-        }
-
-        .chat-msg.white-msg {
-            background: #fce4ec;
-            color: #c62828;
-        }
-
-        .chat-msg .sender {
-            font-weight: 600;
-            margin-right: 4px;
+        @keyframes danmaku-fly {
+            0% { transform: translateX(100%); opacity: 1; }
+            100% { transform: translateX(-100%); opacity: 0; }
         }
 
         .chat-quick-btns {
@@ -583,22 +558,21 @@
                     <button class="btn btn-cheat" id="cheatBtn" onclick="toggleCheat()">🚀 开挂</button>
                 </div>
                 <div id="hintStatus"></div>
+            </div>
 
-                <div class="chat-panel" id="chatPanel">
-                    <h3>💬 嘴炮时间</h3>
-                    <div class="chat-messages" id="chatMessages"></div>
-                    <div class="chat-quick-btns" id="chatQuickBtns">
-                        <button class="chat-quick-btn" onclick="sendChat('你这棋下得也忒好了吧')">你这棋下得也忒好了吧</button>
-                        <button class="chat-quick-btn" onclick="sendChat('嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚')">嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚</button>
-                        <button class="chat-quick-btn" onclick="sendChat('就这？')">就这？</button>
-                        <button class="chat-quick-btn" onclick="sendChat('菜')">菜</button>
-                        <button class="chat-quick-btn" onclick="sendChat('我闭着眼下都比你强')">我闭着眼下都比你强</button>
-                        <button class="chat-quick-btn" onclick="sendChat('哈哈哈哈哈')">哈哈哈哈哈</button>
-                        <button class="chat-quick-btn" onclick="sendChat('你是不是故意让我的')">你是不是故意让我的</button>
-                        <button class="chat-quick-btn" onclick="sendChat('认输吧')">认输吧</button>
-                        <button class="chat-quick-btn" onclick="sendChat('这波在大气层')">这波在大气层</button>
-                        <button class="chat-quick-btn" onclick="sendChat('你开心就好')">你开心就好</button>
-                    </div>
+            <div class="game-panel" id="chatPanel" style="margin-top: 15px;">
+                <div class="danmaku-area" id="danmakuArea"></div>
+                <div class="chat-quick-btns">
+                    <button class="chat-quick-btn" onclick="sendChat('你这棋下得也忒好了吧')">你这棋下得也忒好了吧</button>
+                    <button class="chat-quick-btn" onclick="sendChat('嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚')">嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚</button>
+                    <button class="chat-quick-btn" onclick="sendChat('就这？')">就这？</button>
+                    <button class="chat-quick-btn" onclick="sendChat('菜')">菜</button>
+                    <button class="chat-quick-btn" onclick="sendChat('我闭着眼下都比你强')">我闭着眼下都比你强</button>
+                    <button class="chat-quick-btn" onclick="sendChat('哈哈哈哈哈')">哈哈哈哈哈</button>
+                    <button class="chat-quick-btn" onclick="sendChat('你是不是故意让我的')">你是不是故意让我的</button>
+                    <button class="chat-quick-btn" onclick="sendChat('认输吧')">认输吧</button>
+                    <button class="chat-quick-btn" onclick="sendChat('这波在大气层')">这波在大气层</button>
+                    <button class="chat-quick-btn" onclick="sendChat('你开心就好')">你开心就好</button>
                 </div>
             </div>
         </div>
@@ -933,7 +907,7 @@
             createBoard();
             updateStatus();
             clearHint();
-            document.getElementById('chatMessages').innerHTML = '';
+            document.getElementById('danmakuArea').innerHTML = '';
         }
 
         function undoMove() {
@@ -1379,17 +1353,20 @@
                 document.querySelector('.mode-btn:last-child').classList.add('active');
             }
             var chatPanel = document.getElementById('chatPanel');
-            chatPanel.style.display = gameMode === 'pvp' ? 'block' : 'none';
+            if (chatPanel) chatPanel.style.display = gameMode === 'pvp' ? 'block' : 'none';
         }
 
-        // 聊天功能
+        // 聊天功能 - 弹幕模式
         function sendChat(msg) {
-            var chatMessages = document.getElementById('chatMessages');
-            var playerClass = currentPlayer === BLACK ? 'black-msg' : 'white-msg';
-            var playerName = currentPlayer === BLACK ? '黑棋' : '白棋';
-            var html = '<div class="chat-msg ' + playerClass + '"><span class="sender">' + playerName + '：</span>' + msg + '</div>';
-            chatMessages.innerHTML += html;
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            var area = document.getElementById('danmakuArea');
+            var el = document.createElement('div');
+            el.className = 'danmaku-msg';
+            el.textContent = msg;
+            var colors = ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c'];
+            el.style.color = colors[Math.floor(Math.random() * colors.length)];
+            el.style.top = Math.random() * 25 + 'px';
+            area.appendChild(el);
+            setTimeout(function() { el.remove(); }, 4000);
         }
 
         init();
