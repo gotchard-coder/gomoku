@@ -430,6 +430,77 @@
             font-size: 12px;
         }
 
+        .chat-panel {
+            margin-top: 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            max-height: 200px;
+        }
+
+        .chat-panel h3 {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .chat-messages {
+            max-height: 80px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            padding: 5px;
+            background: white;
+            border-radius: 8px;
+            min-height: 40px;
+        }
+
+        .chat-msg {
+            padding: 5px 8px;
+            margin-bottom: 4px;
+            border-radius: 6px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .chat-msg.black-msg {
+            background: #e8f4fd;
+            color: #1565c0;
+        }
+
+        .chat-msg.white-msg {
+            background: #fce4ec;
+            color: #c62828;
+        }
+
+        .chat-msg .sender {
+            font-weight: 600;
+            margin-right: 4px;
+        }
+
+        .chat-quick-btns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .chat-quick-btn {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 15px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+            color: #555;
+            border: 1px solid #ddd;
+        }
+
+        .chat-quick-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -512,6 +583,23 @@
                     <button class="btn btn-cheat" id="cheatBtn" onclick="toggleCheat()">🚀 开挂</button>
                 </div>
                 <div id="hintStatus"></div>
+
+                <div class="chat-panel" id="chatPanel">
+                    <h3>💬 嘴炮时间</h3>
+                    <div class="chat-messages" id="chatMessages"></div>
+                    <div class="chat-quick-btns" id="chatQuickBtns">
+                        <button class="chat-quick-btn" onclick="sendChat('你这棋下得也忒好了吧')">你这棋下得也忒好了吧</button>
+                        <button class="chat-quick-btn" onclick="sendChat('嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚')">嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚嘚</button>
+                        <button class="chat-quick-btn" onclick="sendChat('就这？')">就这？</button>
+                        <button class="chat-quick-btn" onclick="sendChat('菜')">菜</button>
+                        <button class="chat-quick-btn" onclick="sendChat('我闭着眼下都比你强')">我闭着眼下都比你强</button>
+                        <button class="chat-quick-btn" onclick="sendChat('哈哈哈哈哈')">哈哈哈哈哈</button>
+                        <button class="chat-quick-btn" onclick="sendChat('你是不是故意让我的')">你是不是故意让我的</button>
+                        <button class="chat-quick-btn" onclick="sendChat('认输吧')">认输吧</button>
+                        <button class="chat-quick-btn" onclick="sendChat('这波在大气层')">这波在大气层</button>
+                        <button class="chat-quick-btn" onclick="sendChat('你开心就好')">你开心就好</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -845,6 +933,7 @@
             createBoard();
             updateStatus();
             clearHint();
+            document.getElementById('chatMessages').innerHTML = '';
         }
 
         function undoMove() {
@@ -1289,6 +1378,18 @@
             } else {
                 document.querySelector('.mode-btn:last-child').classList.add('active');
             }
+            var chatPanel = document.getElementById('chatPanel');
+            chatPanel.style.display = gameMode === 'pvp' ? 'block' : 'none';
+        }
+
+        // 聊天功能
+        function sendChat(msg) {
+            var chatMessages = document.getElementById('chatMessages');
+            var playerClass = currentPlayer === BLACK ? 'black-msg' : 'white-msg';
+            var playerName = currentPlayer === BLACK ? '黑棋' : '白棋';
+            var html = '<div class="chat-msg ' + playerClass + '"><span class="sender">' + playerName + '：</span>' + msg + '</div>';
+            chatMessages.innerHTML += html;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
         init();
