@@ -437,7 +437,7 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 35px;
+            height: 100%;
             overflow: hidden;
             z-index: 20;
             pointer-events: none;
@@ -448,7 +448,7 @@
             white-space: nowrap;
             font-size: 16px;
             font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8), -1px -1px 2px rgba(0,0,0,0.5);
             animation: danmaku-fly 4s linear forwards;
             pointer-events: none;
         }
@@ -557,9 +557,10 @@
                     <div class="turn" id="turnCount">第 1 手</div>
                 </div>
 
-                <div class="danmaku-area" id="danmakuArea"></div>
-
-                <div class="board" id="board"></div>
+                <div style="position: relative;">
+                    <div class="danmaku-area" id="danmakuArea"></div>
+                    <div class="board" id="board"></div>
+                </div>
 
                 <div class="btn-group" style="margin-top: 15px; display: none;" id="aiButtons">
                     <button class="btn btn-hint" onclick="getHint()">💡 AI提示</button>
